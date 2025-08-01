@@ -8,21 +8,36 @@ Loop {
         Send, {Space}
         FileDelete, command.txt
     }
-    if (command = "next") {
+    else if (command = "next") {
         WinActivate, Opera GX
         Send, {Media_Next}
         FileDelete, command.txt
     }
-    if (command = "previous") {
+    else if (command = "previous") {
         WinActivate, Opera GX
         Send, {Media_Prev}
         FileDelete, command.txt
     }
-    if (command = "next-movie") {
+    else if (command = "next-movie") {
         WinActivate, Opera GX
         Send, {Space}
         Sleep, 500
         Click, 127, 1044
+        FileDelete, command.txt
+    }
+    else if (command = "prev-movie") {
+        WinActivate, Opera GX
+        Send, {Space}
+        Sleep, 500
+        Click, 90, 1044
+        FileDelete, command.txt
+    }
+    else if (command = "volume-up") {
+        SoundSet,+5
+        FileDelete, command.txt
+    }
+    else if (command = "volume-down") {
+        SoundSet,-5
         FileDelete, command.txt
     }
     Sleep, 1000

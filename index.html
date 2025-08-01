@@ -7,62 +7,126 @@
 
 		<style>
         body {
-            background-color: rgb(46, 40, 45);
+            background: linear-gradient(to right, #68110d, #050558);
+						display: flex;
+						align-items: center;
+						justify-content: center;
         }
-        .box1 {
+        .box1, .box2, .box3 {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             width: 100%;
+						height: 400px;
+						align-items: center;
             justify-content: space-between;
         }
 
-        .box1 > button {
-            font-size: 24px;
-            height: 200px;
-            width: 30%;
-            color: green;
-            border: 1px solid green;
-						background-color: rgb(14, 15, 27);
-        }
+				.box1 > button, .btn-pause, .box3 > button {
+					width: 150px;
+					height: 150px;
+					border-radius: 50%;
+				}
 
-        .box2 {
-            margin-top: 30px;
-            width: 100%;
-            
-        }
+				.box1 > :first-child,  .box3 > :first-child{
+					border: 3px solid green;
+				}
 
-        .box2 > button {
-            width: 100%;
-            height: 100px;
-            color: rgb(4, 56, 199);
-            font-size: 24px;
-						background-color: rgb(14, 15, 27);
-						border: 1px solid rgb(4, 56, 199);
-        }
+				/* .box1 > button, .btn-pause {
+					margin-top: 10px;
+				} */
+				
+				.box2 {
+					align-items: center;
+					justify-content: space-between;
+					margin: 0 10px 0 10px;
+				}
 
 				#log {
 					color: #f3ef08;
 					margin-top: 50px;
-					text-wrap: wrap;
 				}
 
-				.container > h1 {
-					color: white;
+				.main-box {
+					display: flex;
+					flex-direction: row;
+				}
+
+				@media (max-width: 568px) {
+					.box1 > button, .btn-pause, .box3 > button  {
+						width: 120px;
+						height: 120px;
+					}
+
+					.box1 {
+						margin-right: -25px;
+					}
+
+					.box3 {
+						margin-left: -25px;
+					}
+				}
+
+				img {
+					width: 50px;
+					height: 50px;
+				}
+
+				.btn-volume {
+					height: 60px;
+					width: 60px;
+					background-color: transparent;
+					border-radius: 50%;
+					border: none;
+				}
+
+				button {
+					cursor: pointer;
+				}
+
+				button:active {
+					background-color: #050558;
+				}
+
+				.container h1 {
+  				text-align: center;
+					color: #db0231;
+					margin-bottom: 50px;
 				}
     </style>
 	</head>
 	<body>
 		<div class="container">
-			<h1>Не вставай</h1>
-			<h2>Audio</h2>
-			<div class="box1">
-				<button data-action="previous">Prev</button>
-				<button data-action="pause">Pause</button>
-				<button data-action="next">Next</button>
-			</div>
-			<div class="box2">
-				<h2>Series</h2>
-				<button data-action="next-movie">Next series</button>
+			<h1>Remote Control</h1>
+			<div class="main-box">
+				<div class="box1">
+					<button data-action="previous">
+						<img src="./img/prev_aud.svg" alt="prev aud" >
+					</button>
+					<button data-action="prev-movie">
+						<img src="./img/prev_movie.svg" alt="prev">
+					</button>
+				</div>
+
+				<div class="box2">
+					<button class="btn-volume" data-action="volume-up">
+						<img src="./img/volume-up.svg" alt="vol.up">
+					</button>
+					<button class="btn-pause" data-action="pause">
+						<img class="icon-pause" src="./img/pause2.svg" alt="pause">
+					</button>
+					<button class="btn-volume" data-action="volume-down">
+						<img src="./img/volume-down.svg" alt="vol.down">
+					</button>
+				</div>
+
+				<div class="box3">
+					<button data-action="next">
+						<img src="./img/next_aud.svg" alt="next aud" >
+					</button>
+					<button data-action="next-movie">
+						<img src="./img/next_movie.svg" alt="next">
+					</button>
+				</div>
 			</div>
 			<p id="log">Сервер запущен!</p>
 		</div>
@@ -75,10 +139,9 @@
     		const action = button.dataset.action
     		if (action) {
       		fetch(`/${action}`)
-						.then(res => res.text())
-        		.then(data => {
-          		let text = document.getElementById('log').textContent
-							document.getElementById('log').textContent = text + " | " + data
+					.then(res => res.text())
+        	.then(data => {
+          	document.getElementById('log').textContent = data
         	});
     		}
       })
