@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+
+		<style>
+        body {
+            background-color: rgb(46, 40, 45);
+        }
+        .box1 {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .box1 > button {
+            font-size: 24px;
+            height: 200px;
+            width: 30%;
+            color: green;
+            border: 1px solid green;
+						background-color: rgb(14, 15, 27);
+        }
+
+        .box2 {
+            margin-top: 30px;
+            width: 100%;
+            
+        }
+
+        .box2 > button {
+            width: 100%;
+            height: 100px;
+            color: rgb(4, 56, 199);
+            font-size: 24px;
+						background-color: rgb(14, 15, 27);
+						border: 1px solid rgb(4, 56, 199);
+        }
+
+				#log {
+					color: #f3ef08;
+					margin-top: 50px;
+					text-wrap: wrap;
+				}
+
+				.container > h1 {
+					color: white;
+				}
+    </style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Не вставай</h1>
+			<h2>Audio</h2>
+			<div class="box1">
+				<button data-action="previous">Prev</button>
+				<button data-action="pause">Pause</button>
+				<button data-action="next">Next</button>
+			</div>
+			<div class="box2">
+				<h2>Series</h2>
+				<button data-action="next-movie">Next series</button>
+			</div>
+			<p id="log">Сервер запущен!</p>
+		</div>
+
+		<script>
+			document.querySelector('.container').addEventListener('click', function (event) {
+    		const button = event.target.closest('button')
+    		if (!button) return
+
+    		const action = button.dataset.action
+    		if (action) {
+      		fetch(`/${action}`)
+						.then(res => res.text())
+        		.then(data => {
+          		let text = document.getElementById('log').textContent
+							document.getElementById('log').textContent = text + " | " + data
+        	});
+    		}
+      })
+		</script>
+	</body>
+</html>
