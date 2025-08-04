@@ -40,5 +40,15 @@ Loop {
         SoundSet,-5
         FileDelete, command.txt
     }
+    else if (command = "rewind-right") {
+        WinActivate, Opera GX
+        Send, {Right}
+        FileDelete, command.txt
+    }
+    else if (command = "rewind-left") {
+        WinActivate, Opera GX
+        Send, {Left}
+        FileDelete, command.txt
+    }
     Sleep, 1000
 }

@@ -7,42 +7,30 @@ const app = express();
 app.use('/img', express.static(path.join(__dirname, 'img')));
 
 app.get('/', (_, res) => {
-    res.sendFile(path.join(__dirname, '', 'index.html'));
+	res.sendFile(path.join(__dirname, '', 'index.html'));
 });
 
-app.get('/pause', (req, res) => {
-    fs.writeFileSync('command.txt', 'pause');
-    res.send("Pause");
-});
+const validCommands = new Set([
+	'pause',
+	'next',
+	'previous',
+	'next-movie',
+	'prev-movie',
+	'volume-up',
+	'volume-down',
+	'rewind-right',
+	'rewind-left'
+]);
 
-app.get('/next', (req, res) => {
-    fs.writeFileSync('command.txt', 'next');
-    res.send("Next");
-});
+app.get('/:command', (req, res) => {
+	const { command } = req.params;
 
-app.get('/previous', (req, res) => {
-    fs.writeFileSync('command.txt', 'previous');
-    res.send("Prev");
-});
+	if (!validCommands.has(command)) {
+		return res.status(400).send('Invalid command');
+	}
 
-app.get('/next-movie', (req, res) => {
-    fs.writeFileSync('command.txt', 'next-movie');
-    res.send("Next movie");
-});
-
-app.get('/prev-movie', (req, res) => {
-    fs.writeFileSync('command.txt', 'prev-movie');
-    res.send("Prev movie");
-});
-
-app.get('/volume-up', (req, res) => {
-    fs.writeFileSync('command.txt', 'volume-up');
-    res.send("Volume up");
-});
-
-app.get('/volume-down', (req, res) => {
-    fs.writeFileSync('command.txt', 'volume-down');
-    res.send("Volume down");
+	fs.writeFileSync('command.txt', command);
+	res.send(`${command} 🍻`);
 });
 
 
