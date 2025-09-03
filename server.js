@@ -51,11 +51,11 @@ app.get('/:command', (req, res) => {
 // x-next,y-next,x-prev,y-prev
 const DATA = [
 	{
-		player: 'anwap_1',
-		coords: '1689,1053,1653,1053'
+		player: 'kinogo-go.tv_2',
+		coords: '1630,1053,1600,1053'
 	},
 	{
-		player: 'kinogo-go.tv_2',
+		player: 'anwap_1',
 		coords: '127,1044,90,1044'
 	}
 ]

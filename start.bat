@@ -1,6 +1,6 @@
 @echo off
 echo Запуск AutoHotkey скрипта...
-start "" "D:\programs\RemoteApp\file.ahk"
+start "" "D:\programs\RemoteApp\operaGXscript.ahk"
 
 echo Запуск Node.js сервера...
 cd /d D:\programs\RemoteApp\server.js

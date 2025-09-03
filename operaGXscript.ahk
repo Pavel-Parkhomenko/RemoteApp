@@ -58,5 +58,7 @@ Loop {
         WinActivate, Opera GX
         Send, {Left}
     }
+    
+    FileDelete, command.txt
     Sleep, 1000
 }
