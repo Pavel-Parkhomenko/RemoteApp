@@ -28,6 +28,8 @@ app.get('/check-server', (req, res) => {
 	return res.status(200).send('Server start successful!')
 })
 
+
+let prevCommand = ['', 1]
 app.get('/:command', (req, res) => {
 	const { command } = req.params
 
@@ -35,8 +37,14 @@ app.get('/:command', (req, res) => {
 		return res.status(400).send('Invalid command')
 	}
 
+	if(prevCommand[0] == command) prevCommand[1]++
+	else {
+		prevCommand[0] = command
+		prevCommand[1] = 1
+	}
+
 	fs.writeFileSync('command.txt', command);
-	res.send(`${command} 🍻`)
+	res.send(`${command} x${prevCommand[1]}`)
 })
 
 // x-next,y-next,x-prev,y-prev
