@@ -37,6 +37,10 @@
 			border-radius: 50%;
 		}
 
+		.btn-pause {
+			border-color: white;
+		}
+
 		.box3 .btn-small {
 			rotate: 180deg;
 		}
@@ -112,11 +116,12 @@
 			background: linear-gradient(to right, #c7605a, #434392);
 		}
 
-		.container h1 {
+		 h1 {
 			text-align: center;
 			color: white;
 			margin-bottom: 50px;
 		}
+
 	</style>
 </head>
 
@@ -160,11 +165,16 @@
 				</button>
 			</div>
 		</div>
-		<p id="log">Сервер запущен!</p>
+		<p id="log">Проверка подключения..</p>
+		<form class="form-menu" id="playerForm">
+			<p style="margin: 0;">Выберите видеоплеер</p>
+			<label><input type="radio" name="playerType" value="anwap_1">anwap №1</label><br>
+			<label><input type="radio" name="playerType" value="kinogo-go.tv_2">kinogo-go.tv №2</label><br>
+		</form>
 	</div>
 
 	<script>
-		document.querySelector('.container').addEventListener('click', function(event) {
+		document.querySelector('.container').addEventListener('click', function (event) {
 			const button = event.target.closest('button')
 			if (!button) return
 			const action = button.dataset.action
@@ -174,6 +184,33 @@
 					.then(data => {
 						document.getElementById('log').textContent = data
 					});
+			}
+		})
+
+		window.addEventListener('load', () => {
+			fetch('/check-server')
+			.then(response => {
+				if(response.ok) {
+					return response.text()
+				}
+				else document.getElementById('log').textContent = response
+			})
+			.then(data => document.getElementById('log').textContent = data)
+			.catch(() => document.getElementById('log').textContent = 'Attention! Server not available!')
+		})
+
+		document.getElementById("playerForm").addEventListener("change", function (e) {
+			if (e.target.name === "playerType") {
+				console.log("Выбран:", e.target.value);
+
+				fetch('/change-player', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						player: e.target.value,
+					})})
+					.then(data => document.getElementById('log').textContent = data)
+
 			}
 		})
 	</script>
