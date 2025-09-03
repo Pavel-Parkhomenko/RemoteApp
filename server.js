@@ -25,6 +25,7 @@ const validCommands = new Set([
 ]);
 
 app.get('/check-server', (req, res) => {
+	fs.writeFileSync('coords.txt', DATA[0].coords);
 	return res.status(200).send('Server start successful!')
 })
 

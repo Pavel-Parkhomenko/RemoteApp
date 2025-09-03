@@ -45,10 +45,10 @@ Loop {
     }
 
     else if (command = "volume-up") {
-        SoundSet,+5
+        SoundSet, +5
     }
     else if (command = "volume-down") {
-        SoundSet,-5
+        SoundSet, -5
     }
     else if (command = "rewind-right") {
         WinActivate, Opera GX
