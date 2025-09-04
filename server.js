@@ -1,8 +1,9 @@
 // server.js
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const app = express();
+const express = require('express')
+const fs = require('fs')
+const path = require('path')
+const app = express()
+const os = require('os')
 
 app.use('/img', express.static(path.join(__dirname, 'img')));
 app.use(express.json());
@@ -76,5 +77,16 @@ app.post('/change-player', (req, res) => {
 	fs.writeFileSync('coords.txt', coords);
 })
 
+function getLocalIP() {
+    const interfaces = os.networkInterfaces();
+    for (const name of Object.keys(interfaces)) {
+        for (const iface of interfaces[name]) {
+            if (iface.family === 'IPv4' && !iface.internal) {
+                return iface.address;
+            }
+        }
+    }
+    return 'localhost';
+}
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+app.listen(3000, () => console.log(`Server running on http://${getLocalIP()}:3000`));

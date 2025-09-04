@@ -28,6 +28,9 @@ Loop {
         y := coordArray2
 
         Click, %x%, %y%
+
+        Sleep, 300
+        MouseMove, 0, 100, 0, R 
     }
     
     else if (command = "prev-movie") {
@@ -42,6 +45,9 @@ Loop {
         y := coordArray4
 
         Click, %x%, %y%
+
+        Sleep, 300
+        MouseMove, 0, 100, 0, R 
     }
 
     else if (command = "volume-up") {
