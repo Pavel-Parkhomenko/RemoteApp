@@ -27,7 +27,10 @@ const validCommands = new Set([
 
 app.get('/check-server', (req, res) => {
 	fs.writeFileSync('coords.txt', DATA[0].coords);
-	return res.status(200).send('Server start successful!')
+	return res.status(200).send({
+		mess: 'Server start successful!',
+		videoPlayers: DATA,
+	})
 })
 
 
@@ -53,12 +56,14 @@ app.get('/:command', (req, res) => {
 const DATA = [
 	{
 		player: 'kinogo-go.tv_2',
-		coords: '1630,1053,1600,1053'
+		coords: '1630,1053,1600,1053',
+		isChecked: true,
 	},
 	{
 		player: 'anwap_1',
-		coords: '127,1044,90,1044'
-	}
+		coords: '127,1044,90,1044',
+		isChecked: false,
+	},
 ]
 
 app.post('/change-player', (req, res) => {
@@ -68,8 +73,9 @@ app.post('/change-player', (req, res) => {
 	DATA.map(item => {
 		if(item.player === player) {
 			coords = item.coords
+			item.isChecked = true
 			return
-		}
+		} else item.isChecked = false
 	})
 
 	if(coords === '') return req.status(400).send('Player is not found!')
