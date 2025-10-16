@@ -23,6 +23,7 @@
 
 			height: 100vh;
 			padding: 20px;
+			/* width: 50%; */
 			box-sizing: border-box;
 		}
 
@@ -67,17 +68,16 @@
 			justify-content: space-evenly;
 		}
 
-		#log {
-			color: #f3ef08;
-			margin-top: 50px;
-		}
-
 		.main-box {
 			display: flex;
 			flex-direction: row;
 		}
 
 		@media (max-width: 568px) {
+
+			.container {
+				width: 100%;
+			}
 
 			.box1>button:not(.btn-small),
 			.btn-pause,
@@ -136,34 +136,50 @@
 
 		#indicator {
 			display: inline-block;
-			width: 20px;
-			height: 20px;
-		}
-		.indicator_color2 {
-			animation: colorSwap2 2s forwards;
+			width: 30px;
+			height: 30px;
+			background-color: rgba(255, 0, 0, 0.425);
+			border-radius: 50%;
 		}
 
 		.indicator_color1 {
-			animation: colorSwap 2s forwards;
+			animation: colorSwap 1s forwards;
 		}
 
 		@keyframes colorSwap {
-			0%   { background-color: red; }
+			0%   { background-color: rgba(255, 0, 0, 0.425); }
 			50%  { background-color: green; }
-			100% { background-color: red; }
+			100% { background-color: rgba(255, 0, 0, 0.425); }
 		}
 
-		@keyframes colorSwap2 {
-			0%   { background-color: green; }
-			50%  { background-color: red; }
-			100% { background-color: green; }
+		.box_log_bg {
+			margin-top: 30px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.box_log_bg button {
+			color: #f3ef08;
+			background-color: rgba(89, 0, 255, 0.425);
+		}
+
+		.box_log_bg #log {
+			color: #f3ef08;
+			display: inline-block;
+			background-color: rgba(89, 0, 255, 0.425);
+		}
+
+		.form-menu {
+			color: #f3ef08;
+			background-color: rgba(89, 0, 255, 0.425);
 		}
 
 	</style>
 </head>
 
 <body>
-	<div class="container">
+	<div id="container-bg" class="container">
 		<h1>Remote <span id="indicator" class="indicator_color1"></span> Control</h1>
 		<div class="main-box">
 			<div class="box1">
@@ -202,7 +218,10 @@
 				</button>
 			</div>
 		</div>
-		<p id="log">Проверка подключения..</p>
+		<div class="box_log_bg">
+			<p id="log">Проверка подключения..</p>
+			<button id="getBgImgBtn">New Img</button>
+		</div>
 		<form class="form-menu" id="playerForm">
 			<p style="margin: 0;">Выберите видеоплеер:</p>
 		</form>
@@ -210,14 +229,26 @@
 
 	<script>
 		const indicator = document.getElementById("indicator")
+		const getBgImgBtn = document.getElementById("getBgImgBtn")
+		const containerBg = document.getElementById('container-bg')
+		const log = document.getElementById('log')
+
+		getBgImgBtn.addEventListener('click', () => {
+			fetch('/get-bg').then(res => res.json()).then(data => {
+				containerBg.style.backgroundImage = `url('${data.img}')`
+				log.textContent = data.message
+				console.log(data)
+			})
+			.catch(err => log.textContent = err.message)
+		})
+
 		document.querySelector('.container').addEventListener('click', function (event) {
 			const button = event.target.closest('button')
 			if (!button) return
 			const action = button.dataset.action
 
 			if(indicator) {
-				console.log("indicator")
-				indicator.classList.toggle('indicator_color2');
+				indicator.classList.toggle('indicator_color1');
 			}
 
 			if (action) {
@@ -234,7 +265,7 @@
 			fetch('/check-server')
 			.then(data => data.json())
 			.then(data => {
-				document.getElementById('log').textContent = data.mess
+				log.textContent = data.mess
 				const playerForm = document.getElementById('playerForm')
 				data.videoPlayers.map((vp, _) => {
 					playerForm.insertAdjacentHTML('beforeEnd', `
@@ -242,7 +273,7 @@
 					`)
 				})
 			})
-			.catch(() => document.getElementById('log').textContent = 'Attention! Server not available!')
+			.catch(() => log.textContent = 'Attention! Server not available!')
 		})
 
 		document.getElementById("playerForm").addEventListener("change", function (e) {
@@ -256,7 +287,6 @@
 						player: e.target.value,
 					})})
 					.then(data => document.getElementById('log').textContent = data)
-
 			}
 		})
 	</script>

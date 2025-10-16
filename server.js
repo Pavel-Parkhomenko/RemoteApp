@@ -5,12 +5,38 @@ const path = require('path')
 const app = express()
 const os = require('os')
 
+require('dotenv').config();
+
+const accessKey = process.env.UNSPLASH_ACCESS_KEY;
+
 app.use('/img', express.static(path.join(__dirname, 'img')));
 app.use(express.json());
 
 app.get('/', (_, res) => {
 	res.sendFile(path.join(__dirname, '', 'index.html'));
 });
+
+app.get('/get-bg', async (req, res) => {
+	const url = `https://api.unsplash.com/photos/random?client_id=${accessKey}`
+
+	try {
+		const response = await fetch(url);
+		if (!response.ok) throw new Error(`Ошибка: ${response.status}`);
+	
+		const data = await response.json();
+		console.log('Фото:', data.urls.full);
+		res.status(200).send({
+			img: data.urls.full,
+			message: "update img successful"
+		})
+	  } catch (error) {
+		console.error('Ошибка запроса:', error.message);
+		res.status(500).send({
+			img: "",
+			message: "get-bg: Internal Server Error"
+		})
+	  }
+})
 
 const validCommands = new Set([
 	'pause',
