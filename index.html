@@ -161,18 +161,23 @@
 
 		.box_log_bg button {
 			color: #f3ef08;
-			background-color: rgba(89, 0, 255, 0.425);
+			/* background-color: rgba(89, 0, 255, 0.425); */
+			border: none;
 		}
 
 		.box_log_bg #log {
 			color: #f3ef08;
 			display: inline-block;
-			background-color: rgba(89, 0, 255, 0.425);
+			background-color: rgba(89, 0, 255, 0.3);
+			padding: 0 10px 0 10px;
+			border-radius: 10px;
 		}
 
 		.form-menu {
 			color: #f3ef08;
-			background-color: rgba(89, 0, 255, 0.425);
+			background-color: rgba(89, 0, 255, 0.3);
+			padding: 0 10px 0 10px;
+			border-radius: 10px;
 		}
 
 	</style>
@@ -220,7 +225,9 @@
 		</div>
 		<div class="box_log_bg">
 			<p id="log">Проверка подключения..</p>
-			<button id="getBgImgBtn">New Img</button>
+			<button id="getBgImgBtn">
+				<img src="./img/getImg.svg" alt="rewind-left">
+			</button>
 		</div>
 		<form class="form-menu" id="playerForm">
 			<p style="margin: 0;">Выберите видеоплеер:</p>
@@ -237,7 +244,6 @@
 			fetch('/get-bg').then(res => res.json()).then(data => {
 				containerBg.style.backgroundImage = `url('${data.img}')`
 				log.textContent = data.message
-				console.log(data)
 			})
 			.catch(err => log.textContent = err.message)
 		})
@@ -254,9 +260,7 @@
 			if (action) {
 				fetch(`/${action}`)
 					.then(res => res.text())
-					.then(data => {
-						document.getElementById('log').textContent = data
-					});
+					.then(data => { document.getElementById('log').textContent = data });
 			}
 		})
 
@@ -272,6 +276,8 @@
 						<label><input type="radio" ${vp.isChecked ? "checked" : ""} name="playerType" value="${vp.player}">${vp.player}</label><br>
 					`)
 				})
+
+				if(data.img) containerBg.style.backgroundImage = `url('${data.img}')`
 			})
 			.catch(() => log.textContent = 'Attention! Server not available!')
 		})

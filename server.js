@@ -13,7 +13,7 @@ app.use('/img', express.static(path.join(__dirname, 'img')));
 app.use(express.json());
 
 app.get('/', (_, res) => {
-	res.sendFile(path.join(__dirname, '', 'index.html'));
+	res.sendFile(path.join(__dirname, '', 'index.html'))
 });
 
 app.get('/get-bg', async (req, res) => {
@@ -23,8 +23,8 @@ app.get('/get-bg', async (req, res) => {
 		const response = await fetch(url);
 		if (!response.ok) throw new Error(`Ошибка: ${response.status}`);
 	
-		const data = await response.json();
-		console.log('Фото:', data.urls.full);
+		const data = await response.json()
+		fs.writeFileSync('bgimg.txt', data.urls.full);
 		res.status(200).send({
 			img: data.urls.full,
 			message: "update img successful"
@@ -53,9 +53,16 @@ const validCommands = new Set([
 
 app.get('/check-server', (req, res) => {
 	fs.writeFileSync('coords.txt', DATA[0].coords);
+
+	let saveImg = ''
+	if(fs.existsSync('bgimg.txt')) {
+		saveImg = fs.readFileSync("bgimg.txt", 'utf8')
+	}
+
 	return res.status(200).send({
 		mess: 'Server start successful!',
 		videoPlayers: DATA,
+		img: saveImg
 	})
 })
 
