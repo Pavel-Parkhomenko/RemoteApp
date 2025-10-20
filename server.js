@@ -88,15 +88,30 @@ app.get('/:command', (req, res) => {
 // x-next,y-next,x-prev,y-prev
 const DATA = [
 	{
-		player: 'kinogo-go.tv_2',
-		coords: '1630,1053,1600,1053',
-		isChecked: true,
+		player: 'kinogo_4k',
+		coords: '1655,1056,1624,1056',
+		isChecked: true
 	},
 	{
 		player: 'anwap_1',
 		coords: '127,1044,90,1044',
-		isChecked: false,
+		isChecked: false
 	},
+	{
+		player: 'kinogo.club',
+		coords: '121,1057,27,1053',
+		isChecked: false
+	},
+	{
+		player: 'kinogo.ec',
+		coords: '1672,1050,100,100',
+		isChecked: false
+	},
+	{
+		player: 'kinogo.ec2',
+		coords: '1705,1053,100,100',
+		isChecked: false
+	}
 ]
 
 app.post('/change-player', (req, res) => {
