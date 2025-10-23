@@ -1,70 +1,79 @@
-#Persistent
-SetTitleMatchMode, 2
+#Requires AutoHotkey v2.0
 
 Loop {
-    FileRead, command, command.txt
-    if (command = "pause") {
-        WinActivate, Opera GX
-        Send, {Space}
-    }
-    else if (command = "next") {
-        WinActivate, Opera GX
-        Send, {Media_Next}
-    }
-    else if (command = "previous") {
-        WinActivate, Opera GX
-        Send, {Media_Prev}
-    }
-
-    else if (command = "next-movie") {
-        WinActivate, Opera GX
-        Send, {Space}
-        Sleep, 500
-
-        FileRead, coords, coords.txt
-        StringSplit, coordArray, coords, `,
-
-        x := coordArray1
-        y := coordArray2
-
-        Click, %x%, %y%
-
-        Sleep, 300
-        MouseMove, 0, 100, 0, R 
-    }
+    command := ""
+    operaWin := "ahk_exe opera.exe"
     
-    else if (command = "prev-movie") {
-        WinActivate, Opera GX
-        Send, {Space}
-        Sleep, 500
-
-        FileRead, coords, coords.txt
-        StringSplit, coordArray, coords, `,
-
-        x := coordArray3
-        y := coordArray4
-
-        Click, %x%, %y%
-
-        Sleep, 300
-        MouseMove, 0, 100, 0, R 
+    if FileExist("command.txt") {
+        command := Trim(FileRead("command.txt"))
+    }
+    else {
+        Sleep(1000)
+        continue
     }
 
-    else if (command = "volume-up") {
-        SoundSet, +5
+    if command == "pause" {
+        WinActivate(operaWin)
+        Send("{Space}")
     }
-    else if (command = "volume-down") {
-        SoundSet, -5
+    else if command == "next" {
+        WinActivate(operaWin)
+        Send("{Media_Next}")
     }
-    else if (command = "rewind-right") {
-        WinActivate, Opera GX
-        Send, {Right}
+    else if command == "previous" {
+        WinActivate(operaWin)
+        Send("{Media_Prev}")
+        Sleep(100)
+        Send("{Media_Prev}")
     }
-    else if (command = "rewind-left") {
-        WinActivate, Opera GX
-        Send, {Left}
+    else if command == "next-movie" {
+        WinActivate(operaWin)
+        Send("{Space}")
+        Sleep(500)
+
+        coords := Trim(FileRead("coords.txt"))
+        coordArray := StrSplit(coords, ",")
+
+        x := coordArray[1]
+        y := coordArray[2]
+
+        Click(x, y)
+        Sleep(300)
+        MouseMove(0, 100, 0, "R")
     }
-    
-    FileDelete, command.txt
-    Sleep, 1000
+    else if command == "prev-movie" {
+        WinActivate(operaWin)
+        Send("{Space}")
+        Sleep(500)
+
+        coords := Trim(FileRead("coords.txt"))
+        coordArray := StrSplit(coords, ",")
+
+        x := coordArray[3]
+        y := coordArray[4]
+
+        Click(x, y)
+        Sleep(300)
+        MouseMove(0, 100, 0, "R")
+    }
+    else if command == "volume-up" {
+        SoundSetVolume("+5")
+    }
+    else if command == "volume-down" {
+        SoundSetVolume("-5")
+    }
+    else if command == "rewind-right" {
+        WinActivate(operaWin)
+        Send("{Right}")
+    }
+    else if command == "rewind-left" {
+        WinActivate(operaWin)
+        Send("{Left}")
+    }
+
+    if FileExist("command.txt") {
+        FileDelete("command.txt")
+    }
+
+    Sleep(1000)
 }

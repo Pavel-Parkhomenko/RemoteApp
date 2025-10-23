@@ -1,10 +1,10 @@
 @echo off
 chcp 65001
 echo Запуск AutoHotkey скрипта...
-start "" "D:\programs\RemoteApp\operaGXscript.ahk"
+start "" "D:\GIT\RemoteApp\operaGXscript.ahk"
 
 echo Запуск Node.js сервера...
-cd /d D:\programs\RemoteApp
+cd /d D:\GIT\RemoteApp
 echo Приложение доступно в вашем браузере по адресу:
 node server.js
 
