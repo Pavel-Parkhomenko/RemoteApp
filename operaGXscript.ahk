@@ -17,11 +17,11 @@ Loop {
         Send("{Space}")
     }
     else if command == "next" {
-        WinActivate(operaWin)
+        ; WinActivate(operaWin)
         Send("{Media_Next}")
     }
     else if command == "previous" {
-        WinActivate(operaWin)
+        ; WinActivate(operaWin)
         Send("{Media_Prev}")
         Sleep(100)
         Send("{Media_Prev}")
@@ -34,12 +34,14 @@ Loop {
         coords := Trim(FileRead("coords.txt"))
         coordArray := StrSplit(coords, ",")
 
-        x := coordArray[1]
-        y := coordArray[2]
+        x := coordArray[1] + 0
+        y := coordArray[2] + 0
+        x_m := coordArray[5] + 0
+        y_m := coordArray[6] + 0
 
         Click(x, y)
         Sleep(300)
-        MouseMove(0, 100, 0, "R")
+        MouseMove(x_m, y_m, 0)
     }
     else if command == "prev-movie" {
         WinActivate(operaWin)
@@ -49,12 +51,14 @@ Loop {
         coords := Trim(FileRead("coords.txt"))
         coordArray := StrSplit(coords, ",")
 
-        x := coordArray[3]
-        y := coordArray[4]
+        x := coordArray[3] + 0
+        y := coordArray[4] + 0
+        x_m := coordArray[5] + 0
+        y_m := coordArray[6] + 0
 
         Click(x, y)
         Sleep(300)
-        MouseMove(0, 100, 0, "R")
+        MouseMove(x_m, y_m, 0)
     }
     else if command == "volume-up" {
         SoundSetVolume("+5")
@@ -69,6 +73,17 @@ Loop {
     else if command == "rewind-left" {
         WinActivate(operaWin)
         Send("{Left}")
+    }
+    else if command == "click-f" {
+        WinActivate(operaWin)
+        Send("{f}")
+    }
+    else if command == "not-cursor" {
+        CoordMode("Mouse", "Screen")  
+        MouseMove(2000, 540, 0)
+    }
+    else if command == "click-lkm" {
+        Click()
     }
 
     if FileExist("command.txt") {

@@ -17,7 +17,8 @@
 
 		.container {
 			background-image: url('./img/back2.jpg');
-			background-size: cover; /* или contain */
+			background-size: cover;
+			/* или contain */
 			background-repeat: no-repeat;
 			background-position: center;
 
@@ -125,7 +126,7 @@
 		}
 
 		button:active {
-			background-color:rgb(23, 6, 121, 0.5)
+			background-color: rgb(23, 6, 121, 0.5)
 		}
 
 		h1 {
@@ -147,9 +148,17 @@
 		}
 
 		@keyframes colorSwap {
-			0%   { background-color: rgba(255, 0, 0, 0.425); }
-			50%  { background-color: green; }
-			100% { background-color: rgba(255, 0, 0, 0.425); }
+			0% {
+				background-color: rgba(255, 0, 0, 0.425);
+			}
+
+			50% {
+				background-color: green;
+			}
+
+			100% {
+				background-color: rgba(255, 0, 0, 0.425);
+			}
 		}
 
 		.box_log_bg {
@@ -180,6 +189,10 @@
 			border-radius: 10px;
 		}
 
+		.btn-box {
+			display: flex;
+			flex-direction: row;
+		}
 	</style>
 </head>
 
@@ -225,9 +238,20 @@
 		</div>
 		<div class="box_log_bg">
 			<p id="log">Проверка подключения..</p>
-			<button id="getBgImgBtn">
-				<img src="./img/getImg.svg" alt="rewind-left">
-			</button>
+			<div class="btn-box">
+				<button id="btnF">
+					<img src="./img/full_screen.svg" alt="full-screen">
+				</button>
+				<button id="btnNotCursor">
+					<img src="./img/not_cursor.svg" alt="not-cursor">
+				</button>
+				<button id="btnClickLkm">
+					<img src="./img/lkm.svg" alt="lkm">
+				</button>
+				<button id="getBgImgBtn">
+					<img src="./img/getImg.svg" alt="rewind-left">
+				</button>
+			</div>
 		</div>
 		<form class="form-menu" id="playerForm">
 			<p style="margin: 0;">Выберите видеоплеер:</p>
@@ -245,7 +269,7 @@
 				containerBg.style.backgroundImage = `url('${data.img}')`
 				log.textContent = data.message
 			})
-			.catch(err => log.textContent = err.message)
+				.catch(err => log.textContent = err.message)
 		})
 
 		document.querySelector('.container').addEventListener('click', function (event) {
@@ -253,7 +277,7 @@
 			if (!button) return
 			const action = button.dataset.action
 
-			if(indicator) {
+			if (indicator) {
 				indicator.classList.toggle('indicator_color1');
 			}
 
@@ -264,22 +288,22 @@
 			}
 		})
 
-		
+
 		window.addEventListener('load', () => {
 			fetch('/check-server')
-			.then(data => data.json())
-			.then(data => {
-				log.textContent = data.mess
-				const playerForm = document.getElementById('playerForm')
-				data.videoPlayers.map((vp, _) => {
-					playerForm.insertAdjacentHTML('beforeEnd', `
+				.then(data => data.json())
+				.then(data => {
+					log.textContent = data.mess
+					const playerForm = document.getElementById('playerForm')
+					data.videoPlayers.map((vp, _) => {
+						playerForm.insertAdjacentHTML('beforeEnd', `
 						<label><input type="radio" ${vp.isChecked ? "checked" : ""} name="playerType" value="${vp.player}">${vp.player}</label><br>
 					`)
-				})
+					})
 
-				if(data.img) containerBg.style.backgroundImage = `url('${data.img}')`
-			})
-			.catch(() => log.textContent = 'Attention! Server not available!')
+					if (data.img) containerBg.style.backgroundImage = `url('${data.img}')`
+				})
+				.catch(() => log.textContent = 'Attention! Server not available!')
 		})
 
 		document.getElementById("playerForm").addEventListener("change", function (e) {
@@ -291,9 +315,28 @@
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({
 						player: e.target.value,
-					})})
+					})
+				})
 					.then(data => document.getElementById('log').textContent = data)
 			}
+		})
+
+		document.getElementById("btnF").addEventListener('click', () => {
+			fetch(`/click-f`)
+				.then(res => res.text())
+				.then(data => { document.getElementById('log').textContent = data });
+		})
+
+		document.getElementById("btnNotCursor").addEventListener('click', () => {
+			fetch(`/not-cursor`)
+				.then(res => res.text())
+				.then(data => { document.getElementById('log').textContent = data });
+		})
+
+		document.getElementById("btnClickLkm").addEventListener('click', () => {
+			fetch(`/click-lkm`)
+				.then(res => res.text())
+				.then(data => { document.getElementById('log').textContent = data });
 		})
 	</script>
 </body>

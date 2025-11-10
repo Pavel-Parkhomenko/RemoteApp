@@ -16,6 +16,21 @@ app.get('/', (_, res) => {
 	res.sendFile(path.join(__dirname, '', 'index.html'))
 });
 
+app.get('/click-f', (_, res) => {
+	fs.writeFileSync('command.txt', 'click-f');
+	res.send(`click-f`)
+});
+
+app.get('/not-cursor', (_, res) => {
+	fs.writeFileSync('command.txt', 'not-cursor');
+	res.send(`not-cursor`)
+});
+
+app.get('/click-lkm', (_, res) => {
+	fs.writeFileSync('command.txt', 'click-lkm');
+	res.send(`click-lkm`)
+});
+
 app.get('/get-bg', async (req, res) => {
 	const url = `https://api.unsplash.com/photos/random?client_id=${accessKey}`
 
@@ -48,7 +63,6 @@ const validCommands = new Set([
 	'volume-down',
 	'rewind-right',
 	'rewind-left',
-	
 ]);
 
 app.get('/check-server', (req, res) => {
@@ -85,31 +99,39 @@ app.get('/:command', (req, res) => {
 	res.send(`${command} x${prevCommand[1]}`)
 })
 
-// x-next,y-next,x-prev,y-prev
+const c_x = 1920 / 2 // 960
+const c_y = 1080 / 2 // 540
+
+// x-next,y-next,x-prev,y-prev,x-move,y-move
 const DATA = [
 	{
 		player: 'kinogo_4k',
-		coords: '1655,1056,1624,1056',
+		coords: `1655,1056,100,100,${c_x},${c_y}`,
 		isChecked: true
 	},
 	{
 		player: 'anwap_1',
-		coords: '127,1044,90,1044',
+		coords: `127,1044,100,100,${c_x},${c_y}`,
 		isChecked: false
 	},
 	{
 		player: 'kinogo.club',
-		coords: '121,1057,27,1053',
+		coords: `121,1057,100,100,${c_x},${c_y}`,
 		isChecked: false
 	},
 	{
 		player: 'kinogo.ec',
-		coords: '1672,1050,100,100',
+		coords: `1670,1100,100,100,${c_x},${c_y}`,
 		isChecked: false
 	},
 	{
 		player: 'kinogo.ec2',
-		coords: '1705,1053,100,100',
+		coords: `1705,1053,100,100,${c_x},${c_y}`,
+		isChecked: false
+	},
+	{
+		player: 'kinogo.you',
+		coords: `72,1052,100,100,${c_x},${c_y}`,
 		isChecked: false
 	}
 ]
