@@ -2,343 +2,392 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Remote App</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Remote App</title>
 
-	<style>
-		body {
-			background: linear-gradient(to right, #2b1c1b, #020252);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			margin: 0;
-		}
+  <style>
+    body {
+      background: linear-gradient(to right, #2b1c1b, #020252);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+    }
 
-		.container {
-			background-image: url('./img/back2.jpg');
-			background-size: cover;
-			/* или contain */
-			background-repeat: no-repeat;
-			background-position: center;
+    button {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
 
-			height: 100vh;
-			padding: 20px;
-			/* width: 50%; */
-			box-sizing: border-box;
-		}
+    .container {
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      will-change: transform;
 
-		button {
-			border: 1px solid black;
-		}
+      height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+    }
 
-		.box1,
-		.box2,
-		.box3 {
-			display: flex;
-			flex-direction: column;
-			width: 100%;
-			height: 400px;
-			align-items: center;
-			justify-content: space-between;
-		}
+    button {
+      border: 1px solid black;
+    }
 
-		.box1>button:not(.btn-small),
-		.btn-pause,
-		.box3>button:not(.btn-small) {
-			width: 150px;
-			height: 150px;
-			border-radius: 50%;
-		}
+    .box1,
+    .box2,
+    .box3 {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 400px;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-		.btn-pause {
-			border-color: white;
-		}
+    .box1>button:not(.btn-small),
+    .btn-pause,
+    .box3>button:not(.btn-small) {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+    }
 
-		.box3 .btn-small {
-			rotate: 180deg;
-		}
+    .btn-pause {
+      border-color: white;
+    }
 
-		.box1> :first-child,
-		.box3> :first-child {
-			border: 3px solid rgb(23, 6, 121);
-		}
+    .box3 .btn-small {
+      rotate: 180deg;
+    }
 
-		.box2 {
-			margin: 0 10px 0 10px;
-			justify-content: space-evenly;
-		}
+    .box1> :first-child,
+    .box3> :first-child {
+      border: 3px solid rgb(23, 6, 121);
+    }
 
-		.main-box {
-			display: flex;
-			flex-direction: row;
-		}
+    .box2 {
+      margin: 0 10px 0 10px;
+      justify-content: space-evenly;
+    }
 
-		@media (max-width: 568px) {
+    .main-box {
+      display: flex;
+      flex-direction: row;
+    }
 
-			.container {
-				width: 100%;
-			}
+    @media (max-width: 568px) {
+      .container {
+        width: 100%;
+      }
 
-			.box1>button:not(.btn-small),
-			.btn-pause,
-			.box3>button:not(.btn-small) {
-				width: 120px;
-				height: 120px;
-			}
+      .box1>button:not(.btn-small),
+      .btn-pause,
+      .box3>button:not(.btn-small) {
+        width: 120px;
+        height: 120px;
+      }
 
-			.box1 {
-				margin-right: -25px;
-			}
+      .box1 {
+        margin-right: -25px;
+      }
 
-			.box3 {
-				margin-left: -25px;
-			}
+      .box3 {
+        margin-left: -25px;
+      }
 
-			.box2 .up {
-				margin-bottom: -25px;
-			}
+      .box2 .up {
+        margin-bottom: -25px;
+      }
 
-			.box2 .down {
-				margin-top: -25px;
-			}
-		}
+      .box2 .down {
+        margin-top: -25px;
+      }
+    }
 
-		img {
-			width: 50px;
-			height: 50px;
-		}
+    img {
+      width: 50px;
+      height: 50px;
+    }
 
-		.btn-small {
-			height: 60px;
-			width: 60px;
-			background-color: transparent;
-			border-radius: 50%;
-			border: none;
-		}
+    .btn-small {
+      height: 60px;
+      width: 60px;
+      background-color: transparent;
+      border-radius: 50%;
+      border: none;
+    }
 
-		button {
-			cursor: pointer;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background-color: inherit;
-		}
+    button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: inherit;
+    }
 
-		button:active {
-			background-color: rgb(23, 6, 121, 0.5)
-		}
+    button:active {
+      background-color: rgb(23, 6, 121, 0.5);
+    }
 
-		h1 {
-			text-align: center;
-			color: white;
-			margin-bottom: 50px;
-		}
+    h1 {
+      text-align: center;
+      color: white;
+      margin-bottom: 50px;
+    }
 
-		#indicator {
-			display: inline-block;
-			width: 30px;
-			height: 30px;
-			background-color: rgba(255, 0, 0, 0.425);
-			border-radius: 50%;
-		}
+    #indicator {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      background-color: rgba(255, 0, 0, 0.425);
+      border-radius: 50%;
+    }
 
-		.indicator_color1 {
-			animation: colorSwap 1s forwards;
-		}
+    .indicator_color1 {
+      animation: colorSwap 1s forwards;
+    }
 
-		@keyframes colorSwap {
-			0% {
-				background-color: rgba(255, 0, 0, 0.425);
-			}
+    @keyframes colorSwap {
+      0% {
+        background-color: rgba(255, 0, 0, 0.425);
+      }
 
-			50% {
-				background-color: green;
-			}
+      50% {
+        background-color: green;
+      }
 
-			100% {
-				background-color: rgba(255, 0, 0, 0.425);
-			}
-		}
+      100% {
+        background-color: rgba(255, 0, 0, 0.425);
+      }
+    }
 
-		.box_log_bg {
-			margin-top: 30px;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-		}
+    .box_log_bg {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-		.box_log_bg button {
-			color: #f3ef08;
-			/* background-color: rgba(89, 0, 255, 0.425); */
-			border: none;
-		}
+    .box_log_bg button {
+      color: #f3ef08;
+      border: none;
+      height: 80px;
+    }
 
-		.box_log_bg #log {
-			color: #f3ef08;
-			display: inline-block;
-			background-color: rgba(89, 0, 255, 0.3);
-			padding: 0 10px 0 10px;
-			border-radius: 10px;
-		}
+    .box_log_bg #log {
+      color: #f3ef08;
+      display: inline-block;
+      background-color: rgba(89, 0, 255, 0.3);
+      padding: 0 10px 0 10px;
+      border-radius: 10px;
+    }
 
-		.form-menu {
-			color: #f3ef08;
-			background-color: rgba(89, 0, 255, 0.3);
-			padding: 0 10px 0 10px;
-			border-radius: 10px;
-		}
+    #log {
+      padding: 3px;
+    }
 
-		.btn-box {
-			display: flex;
-			flex-direction: row;
-		}
-	</style>
+    .form-menu {
+      color: #f3ef08;
+      background-color: rgba(89, 0, 255, 0.3);
+      padding: 0 10px 0 10px;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .btn-box {
+      display: flex;
+      flex-direction: row;
+    }
+  </style>
 </head>
 
 <body>
-	<div id="container-bg" class="container">
-		<h1>Remote <span id="indicator" class="indicator_color1"></span> Control</h1>
-		<div class="main-box">
-			<div class="box1">
-				<button data-action="previous">
-					<img src="./img/prev_aud.svg" alt="prev aud">
-				</button>
-				<button class="btn-small" data-action="rewind-left">
-					<img src="./img/rewind.svg" alt="rewind-left">
-				</button>
-				<button data-action="prev-movie">
-					<img src="./img/prev_movie.svg" alt="prev">
-				</button>
-			</div>
+  <div id="container-bg" class="container">
+    <h1>Remote <span id="indicator" class="indicator_color1"></span> Control</h1>
+    <div class="main-box">
+      <div class="box1">
+        <button data-action="previous">
+          <img src="./img/prev_aud.svg" alt="prev aud" />
+        </button>
+        <button class="btn-small" data-action="rewind-left">
+          <img src="./img/rewind.svg" alt="rewind-left" />
+        </button>
+        <button data-action="prev-movie">
+          <img src="./img/prev_movie.svg" alt="prev" />
+        </button>
+      </div>
 
-			<div class="box2">
-				<button class="btn-small up" data-action="volume-up">
-					<img src="./img/volume-up.svg" alt="vol.up">
-				</button>
-				<button class="btn-pause" data-action="pause">
-					<img id="play_pause" class="icon-pause" src="./img/pause-play.svg" alt="pause">
-				</button>
-				<button class="btn-small down" data-action="volume-down">
-					<img src="./img/volume-down.svg" alt="vol.down">
-				</button>
-			</div>
+      <div class="box2">
+        <button class="btn-small up" data-action="volume-up">
+          <img src="./img/volume-up.svg" alt="vol.up" />
+        </button>
+        <button class="btn-pause" data-action="pause">
+          <img id="play_pause" class="icon-pause" src="./img/pause-play.svg" alt="pause" />
+        </button>
+        <button class="btn-small down" data-action="volume-down">
+          <img src="./img/volume-down.svg" alt="vol.down" />
+        </button>
+      </div>
 
-			<div class="box3">
-				<button data-action="next">
-					<img src="./img/next_aud.svg" alt="next aud">
-				</button>
-				<button class="btn-small" data-action="rewind-right">
-					<img src="./img/rewind.svg" alt="rewind-right">
-				</button>
-				<button data-action="next-movie">
-					<img src="./img/next_movie.svg" alt="next">
-				</button>
-			</div>
-		</div>
-		<div class="box_log_bg">
-			<p id="log">Проверка подключения..</p>
-			<div class="btn-box">
-				<button id="btnF">
-					<img src="./img/full_screen.svg" alt="full-screen">
-				</button>
-				<button id="btnNotCursor">
-					<img src="./img/not_cursor.svg" alt="not-cursor">
-				</button>
-				<button id="btnClickLkm">
-					<img src="./img/lkm.svg" alt="lkm">
-				</button>
-				<button id="getBgImgBtn">
-					<img src="./img/getImg.svg" alt="rewind-left">
-				</button>
-			</div>
-		</div>
-		<form class="form-menu" id="playerForm">
-			<p style="margin: 0;">Выберите видеоплеер:</p>
-		</form>
-	</div>
+      <div class="box3">
+        <button data-action="next">
+          <img src="./img/next_aud.svg" alt="next aud" />
+        </button>
+        <button class="btn-small" data-action="rewind-right">
+          <img src="./img/rewind.svg" alt="rewind-right" />
+        </button>
+        <button data-action="next-movie">
+          <img src="./img/next_movie.svg" alt="next" />
+        </button>
+      </div>
+    </div>
+    <div class="box_log_bg">
+      <p id="log">Проверка подключения..</p>
+      <div class="btn-box">
+        <button id="btnF">
+          <img src="./img/full_screen.svg" alt="full-screen" />
+        </button>
+        <button id="btnNotCursor">
+          <img src="./img/not_cursor.svg" alt="not-cursor" />
+        </button>
+        <button id="btnClickLkm">
+          <img src="./img/lkm.svg" alt="lkm" />
+        </button>
+        <button id="getBgImgBtn">
+          <img src="./img/getImg.svg" alt="rewind-left" />
+        </button>
+      </div>
+    </div>
+    <form class="form-menu" id="playerForm">
+      <p style="margin: 0">Выберите видеоплеер:</p>
+    </form>
+  </div>
 
-	<script>
-		const indicator = document.getElementById("indicator")
-		const getBgImgBtn = document.getElementById("getBgImgBtn")
-		const containerBg = document.getElementById('container-bg')
-		const log = document.getElementById('log')
+  <script>
+    const indicator = document.getElementById('indicator');
+    const getBgImgBtn = document.getElementById('getBgImgBtn');
+    const containerBg = document.getElementById('container-bg');
+    const log = document.getElementById('log');
 
-		getBgImgBtn.addEventListener('click', () => {
-			fetch('/get-bg').then(res => res.json()).then(data => {
-				containerBg.style.backgroundImage = `url('${data.img}')`
-				log.textContent = data.message
-			})
-				.catch(err => log.textContent = err.message)
-		})
+    getBgImgBtn.addEventListener('click', () => {
+      let isBusy = false;
+      if (!isBusy) {
+        isBusy = true;
+        fetch('/get-bg')
+          .then((res) => res.json())
+          .then((data) => {
+            containerBg.style.backgroundImage = `url('${data.img}')`;
+            log.textContent = data.message;
+          })
+          .catch((err) => (log.textContent = err.message))
+          .finally(() => (isBusy = false));
+      }
+    });
 
-		document.querySelector('.container').addEventListener('click', function (event) {
-			const button = event.target.closest('button')
-			if (!button) return
-			const action = button.dataset.action
+    document.querySelector('.container').addEventListener('click', function (event) {
+      const button = event.target.closest('button');
+      if (!button) return;
+      const action = button.dataset.action;
 
-			if (indicator) {
-				indicator.classList.toggle('indicator_color1');
-			}
+      if (indicator) {
+        indicator.classList.toggle('indicator_color1');
+      }
 
-			if (action) {
-				fetch(`/${action}`)
-					.then(res => res.text())
-					.then(data => { document.getElementById('log').textContent = data });
-			}
-		})
+      let isBusy = false;
+      if (action && !isBusy) {
+        isBusy = true;
+        fetch(`/${action}`)
+          .then((res) => res.text())
+          .then((data) => {
+            document.getElementById('log').textContent = data;
+          })
+          .finally(() => (isBusy = false));
+      }
+    });
 
+    window.addEventListener('load', () => {
+      let isBusy = false;
+      if (!isBusy) {
+        isBusy = true;
+        fetch('/check-server')
+          .then((data) => data.json())
+          .then((data) => {
+            log.textContent = data.mess;
+            const playerForm = document.getElementById('playerForm');
+            data.videoPlayers.map((vp, _) => {
+              playerForm.insertAdjacentHTML(
+                'beforeEnd',
+                `<label><input type="radio" ${vp.isChecked ? 'checked' : ''
+                } name="playerType" value="${vp.player}">${vp.player}</label><br>`
+              );
+            });
 
-		window.addEventListener('load', () => {
-			fetch('/check-server')
-				.then(data => data.json())
-				.then(data => {
-					log.textContent = data.mess
-					const playerForm = document.getElementById('playerForm')
-					data.videoPlayers.map((vp, _) => {
-						playerForm.insertAdjacentHTML('beforeEnd', `
-						<label><input type="radio" ${vp.isChecked ? "checked" : ""} name="playerType" value="${vp.player}">${vp.player}</label><br>
-					`)
-					})
+            if (data.img) containerBg.style.backgroundImage = `url('${data.img}')`;
+          })
+          .catch(() => (log.textContent = 'Attention! Server not available!'))
+          .finally(() => (isBusy = false));
+      }
+    });
 
-					if (data.img) containerBg.style.backgroundImage = `url('${data.img}')`
-				})
-				.catch(() => log.textContent = 'Attention! Server not available!')
-		})
+    document.getElementById('playerForm').addEventListener('change', function (e) {
+      let isBusy = false;
+      if (!isBusy) {
+        isBusy = true;
+        if (e.target.name === 'playerType') {
+          fetch('/change-player', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              player: e.target.value,
+            }),
+          })
+            .then((data) => (document.getElementById('log').textContent = data))
+            .finally(() => (isBusy = false));
+        }
+      }
+    });
 
-		document.getElementById("playerForm").addEventListener("change", function (e) {
-			if (e.target.name === "playerType") {
-				console.log("Выбран:", e.target.value);
+    document.getElementById('btnF').addEventListener('click', () => {
+      let isBusy = false;
+      if (!isBusy) {
+        isBusy = true;
+        fetch(`/click-f`)
+          .then((res) => res.text())
+          .then((data) => {
+            document.getElementById('log').textContent = data;
+          })
+          .finally(() => (isBusy = false));
+      }
+    });
 
-				fetch('/change-player', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({
-						player: e.target.value,
-					})
-				})
-					.then(data => document.getElementById('log').textContent = data)
-			}
-		})
+    document.getElementById('btnNotCursor').addEventListener('click', () => {
+      let isBusy = false;
+      if (!isBusy) {
+        isBusy = true;
+        fetch(`/not-cursor`)
+          .then((res) => res.text())
+          .then((data) => {
+            document.getElementById('log').textContent = data;
+          })
+          .finally(() => (isBusy = false));
+      }
+    });
 
-		document.getElementById("btnF").addEventListener('click', () => {
-			fetch(`/click-f`)
-				.then(res => res.text())
-				.then(data => { document.getElementById('log').textContent = data });
-		})
-
-		document.getElementById("btnNotCursor").addEventListener('click', () => {
-			fetch(`/not-cursor`)
-				.then(res => res.text())
-				.then(data => { document.getElementById('log').textContent = data });
-		})
-
-		document.getElementById("btnClickLkm").addEventListener('click', () => {
-			fetch(`/click-lkm`)
-				.then(res => res.text())
-				.then(data => { document.getElementById('log').textContent = data });
-		})
-	</script>
+    document.getElementById('btnClickLkm').addEventListener('click', () => {
+      let isBusy = false;
+      if (!isBusy) {
+        isBusy = true;
+        fetch(`/click-lkm`)
+          .then((res) => res.text())
+          .then((data) => {
+            document.getElementById('log').textContent = data;
+          })
+          .finally(() => (isBusy = false));
+      }
+    });
+  </script>
 </body>
 
 </html>
