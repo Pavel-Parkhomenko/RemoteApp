@@ -95,7 +95,7 @@ app.get('/get-bg', async (req, res) => {
       if (err) res.status(400).send({ message: 'error' });
       else {
         res.status(200).send({
-          img: data.urls.small,
+          img: data.urls.regular,
           message: 'update img successful',
         });
       }
