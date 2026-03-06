@@ -21,7 +21,7 @@ let DATA = [];
 function parseDATAfile() {
   if (!fs.existsSync('./DATA.json')) {
     const EXAMPLE = {
-      player: 'kinogo.ec',
+      player: 'video_0.com',
       coords: `1670,1100,100,100,${c_x},${c_y}`,
       isChecked: false,
     };
@@ -48,6 +48,12 @@ function parseDATAfile() {
         coordsArr.push(c_y);
 
         dt[i].coords = coordsArr.join(',');
+      }
+
+      if(dt[i].isChecked) {
+        fs.writeFile('coords.txt', coords, (err) => {
+          if (err) res.status(400).send('Invalid command');
+        });
       }
     }
 
@@ -124,7 +130,9 @@ app.get('/check-server', (_, res) => {
   try {
     parseDATAfile();
   } catch (err) {
-    res.status(400).send(err.message);
+    res.status(400).send({
+      mess: err.message,
+    });
   }
 
   fs.writeFile('coords.txt', DATA[0].coords, (err) => {
