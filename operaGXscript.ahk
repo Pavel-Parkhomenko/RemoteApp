@@ -1,5 +1,12 @@
 #Requires AutoHotkey v2.0
 
+Log(текст) {
+    current_time := FormatTime(, "yyyy-MM-dd HH:mm:ss")
+    FileAppend("[ " current_time " ] " текст "`n", "debug_log.txt")
+}
+
+CoordMode("Mouse", "Screen")
+
 Loop {
     command := ""
     operaWin := "ahk_exe opera.exe"
@@ -35,13 +42,18 @@ Loop {
         coordArray := StrSplit(coords, ",")
 
         x := coordArray[1] + 0
+        ; Log("x = " x)
         y := coordArray[2] + 0
+        ; Log("y = " y)
         x_m := coordArray[5] + 0
+        ; Log("x_m = " x_m)
         y_m := coordArray[6] + 0
+        ; Log("y_m = " y_m)
 
-        Click(x, y)
+        Click(x, y, 0)
         Sleep(300)
         MouseMove(x_m, y_m, 0)
+        Sleep(300)
     }
     else if command == "prev-movie" {
         WinActivate(operaWin)
@@ -56,9 +68,10 @@ Loop {
         x_m := coordArray[5] + 0
         y_m := coordArray[6] + 0
 
-        Click(x, y)
+        Click(x, y, 0)
         Sleep(300)
         MouseMove(x_m, y_m, 0)
+        Sleep(300)
     }
     else if command == "volume-up" {
         SoundSetVolume("+5")
