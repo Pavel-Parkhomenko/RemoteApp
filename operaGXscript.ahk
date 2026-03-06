@@ -50,7 +50,7 @@ Loop {
         y_m := coordArray[6] + 0
         ; Log("y_m = " y_m)
 
-        Click(x, y, 0)
+        Click(x, y)
         Sleep(300)
         MouseMove(x_m, y_m, 0)
         Sleep(300)
@@ -68,7 +68,7 @@ Loop {
         x_m := coordArray[5] + 0
         y_m := coordArray[6] + 0
 
-        Click(x, y, 0)
+        Click(x, y)
         Sleep(300)
         MouseMove(x_m, y_m, 0)
         Sleep(300)
