@@ -12,8 +12,8 @@ const accessKey = process.env.UNSPLASH_ACCESS_KEY;
 app.use('/img', express.static(path.join(__dirname, 'img')));
 app.use(express.json());
 
-const c_x = 1920 / 2; // 960
-const c_y = 1080 / 2; // 540
+const c_x = 2560 / 2;
+const c_y = 1440 / 2;
 
 // x-next,y-next,x-prev,y-prev,x-move,y-move
 let DATA = [];
@@ -36,7 +36,7 @@ function parseDATAfile() {
       let player = dt[i].player;
       let coords = dt[i].coords;
 
-      if (!player || player === "__NAME") throw new Error('Player name is invalid');
+      if (!player || player === '__NAME') throw new Error('Player name is invalid');
       if (!coords) throw new Error('Coords are invalid');
 
       let coordsArr = coords.split(',');
@@ -50,7 +50,7 @@ function parseDATAfile() {
         dt[i].coords = coordsArr.join(',');
       }
 
-      if(dt[i].isChecked) {
+      if (dt[i].isChecked) {
         fs.writeFile('coords.txt', coords, (err) => {
           if (err) res.status(400).send('Invalid command');
         });
@@ -85,6 +85,14 @@ app.get('/click-lkm', (_, res) => {
   fs.writeFile('command.txt', 'click-lkm', (err) => {
     if (err) res.status(400).send('Invalid command');
     else res.send(`click-lkm`);
+  });
+});
+
+app.get('/center-cursor', (_, res) => {
+  console.log('center-cursor');
+  fs.writeFile('command.txt', 'center-cursor', (err) => {
+    if (err) res.status(400).send('Invalid command');
+    else res.send(`center-cursor`);
   });
 });
 
@@ -124,6 +132,7 @@ const validCommands = new Set([
   'volume-down',
   'rewind-right',
   'rewind-left',
+  'center-cursor',
 ]);
 
 app.get('/check-server', (_, res) => {

@@ -52,11 +52,11 @@ goto CONTINUE
 
 :CONTINUE
 echo Запуск AutoHotkey скрипта...
-if exist "operaGXscript.ahk" (
-    start "" "operaGXscript.ahk"
+if exist "keyScript.ahk" (
+    start "" "keyScript.ahk"
     echo ✅ Успешно
 ) else (
-    echo ❌ ОШИБКА: operaGXscript.ahk не найден!
+    echo ❌ ОШИБКА: keyScript.ahk не найден!
     goto ERROR__
 )
 

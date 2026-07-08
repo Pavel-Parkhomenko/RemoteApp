@@ -7,10 +7,10 @@ Log(текст) {
 
 CoordMode("Mouse", "Screen")
 
-Loop {
+loop {
     command := ""
     operaWin := "ahk_exe opera.exe"
-    
+
     if FileExist("command.txt") {
         command := Trim(FileRead("command.txt"))
     }
@@ -20,7 +20,7 @@ Loop {
     }
 
     if command == "pause" {
-        WinActivate(operaWin)
+        ; WinActivate(operaWin)
         Send("{Space}")
     }
     else if command == "next" {
@@ -34,7 +34,7 @@ Loop {
         Send("{Media_Prev}")
     }
     else if command == "next-movie" {
-        WinActivate(operaWin)
+        ; WinActivate(operaWin)
         Send("{Space}")
         Sleep(500)
 
@@ -56,7 +56,7 @@ Loop {
         Sleep(300)
     }
     else if command == "prev-movie" {
-        WinActivate(operaWin)
+        ; WinActivate(operaWin)
         Send("{Space}")
         Sleep(500)
 
@@ -80,23 +80,27 @@ Loop {
         SoundSetVolume("-5")
     }
     else if command == "rewind-right" {
-        WinActivate(operaWin)
+        ; WinActivate(operaWin)
         Send("{Right}")
     }
     else if command == "rewind-left" {
-        WinActivate(operaWin)
+        ; WinActivate(operaWin)
         Send("{Left}")
     }
     else if command == "click-f" {
-        WinActivate(operaWin)
+        ; WinActivate(operaWin)
         Send("{f}")
     }
     else if command == "not-cursor" {
-        CoordMode("Mouse", "Screen")  
-        MouseMove(2000, 540, 0)
+        CoordMode("Mouse", "Screen")
+        MouseMove(2570, 720, 0)
     }
     else if command == "click-lkm" {
         Click()
+    }
+    else if command == "center-cursor" {
+        CoordMode("Mouse", "Screen")
+        MouseMove(1280, 720, 0)
     }
 
     if FileExist("command.txt") {
