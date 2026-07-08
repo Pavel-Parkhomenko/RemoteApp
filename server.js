@@ -89,7 +89,6 @@ app.get('/click-lkm', (_, res) => {
 });
 
 app.get('/center-cursor', (_, res) => {
-  console.log('center-cursor');
   fs.writeFile('command.txt', 'center-cursor', (err) => {
     if (err) res.status(400).send('Invalid command');
     else res.send(`center-cursor`);
@@ -105,7 +104,7 @@ app.get('/get-bg', async (req, res) => {
 
     const data = await response.json();
 
-    fs.writeFile('bgimg.txt', data.urls.small, (err) => {
+    fs.writeFile('bgimg.txt', data.urls.regular, (err) => {
       if (err) res.status(400).send({ message: 'error' });
       else {
         res.status(200).send({
@@ -144,9 +143,7 @@ app.get('/check-server', (_, res) => {
     });
   }
 
-  fs.writeFile('coords.txt', DATA[0].coords, (err) => {
-    if (err) res.status(400).send('Invalid command');
-  });
+  writeCoordsByIsChecked();
 
   if (fs.existsSync('bgimg.txt')) {
     saveImg = fs.readFile('bgimg.txt', 'utf8', (err, saveImg) => {
@@ -164,6 +161,17 @@ app.get('/check-server', (_, res) => {
     });
   }
 });
+
+function writeCoordsByIsChecked() {
+  DATA.map((item) => {
+    if (item.isChecked) {
+      fs.writeFile('coords.txt', item.coords, (err) => {
+        if (err) res.status(400).send({ mess: 'writeCoordsByIsChecked' });
+      });
+      return;
+    }
+  });
+}
 
 let prevCommand = ['', 1];
 app.get('/:command', (req, res) => {
@@ -196,7 +204,7 @@ app.post('/change-player', (req, res) => {
     } else item.isChecked = false;
   });
 
-  if (coords === '') return res.status(400).send('Player is not found!');
+  if (coords === '') return res.status(400).send({ mess: 'Player is not found!' });
 
   fs.writeFile('DATA.json', JSON.stringify(DATA), (err) => {});
 

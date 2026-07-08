@@ -9,7 +9,7 @@ CoordMode("Mouse", "Screen")
 
 loop {
     command := ""
-    operaWin := "ahk_exe opera.exe"
+    ; operaWin := "ahk_exe opera.exe"
 
     if FileExist("command.txt") {
         command := Trim(FileRead("command.txt"))
