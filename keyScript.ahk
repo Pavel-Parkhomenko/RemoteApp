@@ -100,7 +100,23 @@ loop {
     }
     else if command == "center-cursor" {
         CoordMode("Mouse", "Screen")
-        MouseMove(1280, 720, 0)
+        coords := Trim(FileRead("ext_coords.txt"))
+        coordArray := StrSplit(coords, ",")
+
+        x := coordArray[1] + 0
+        y := coordArray[2] + 0
+
+        MouseMove(x, y, 0)
+    }
+    else if command == "free-cursor" {
+        CoordMode("Mouse", "Screen")
+        coords := Trim(FileRead("ext_coords.txt"))
+        coordArray := StrSplit(coords, ",")
+
+        x := coordArray[1] + 0
+        y := coordArray[2] + 0
+
+        MouseMove(x, y, 0)
     }
 
     if FileExist("command.txt") {

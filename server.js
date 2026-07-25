@@ -10,10 +10,17 @@ require('dotenv').config();
 const accessKey = process.env.UNSPLASH_ACCESS_KEY;
 
 app.use('/img', express.static(path.join(__dirname, 'img')));
+app.use(express.static(__dirname));
 app.use(express.json());
 
-const c_x = 2560 / 2;
-const c_y = 1440 / 2;
+let widthPhone = 500;
+let heightPhone = 500;
+
+const widthPc = 2560;
+const heightPc = 1440;
+
+const c_x = widthPc / 2;
+const c_y = heightPc / 2;
 
 // x-next,y-next,x-prev,y-prev,x-move,y-move
 let DATA = [];
@@ -69,30 +76,58 @@ app.get('/', (_, res) => {
 
 app.get('/click-f', (_, res) => {
   fs.writeFile('command.txt', 'click-f', (err) => {
-    if (err) res.status(400).send('Invalid command');
+    if (err) res.status(400).send('Err: write file');
     else res.send(`click-f`);
   });
 });
 
 app.get('/not-cursor', (_, res) => {
   fs.writeFile('command.txt', 'not-cursor', (err) => {
-    if (err) res.status(400).send('Invalid command');
+    if (err) res.status(400).send('Err: write file');
     else res.send(`not-cursor`);
   });
 });
 
 app.get('/click-lkm', (_, res) => {
   fs.writeFile('command.txt', 'click-lkm', (err) => {
-    if (err) res.status(400).send('Invalid command');
+    if (err) res.status(400).send('Err: write file');
     else res.send(`click-lkm`);
   });
 });
 
 app.get('/center-cursor', (_, res) => {
   fs.writeFile('command.txt', 'center-cursor', (err) => {
-    if (err) res.status(400).send('Invalid command');
+    if (err) res.status(400).send('Err: write file');
     else res.send(`center-cursor`);
   });
+
+  const coords = `${c_x},${c_y}`;
+
+  fs.writeFile('ext_coords.txt', coords, (err) => {
+    if (err) res.status(400).send('Err: write file');
+  });
+});
+
+app.post('/free-cursor', (req, res) => {
+  try {
+    const { x, y } = req.body;
+
+    const pcX = Math.round((y / heightPhone) * widthPc);
+    const pcY = Math.round(((widthPhone - x) / widthPhone) * heightPc);
+
+    const coords = `${pcX},${pcY}`;
+
+    fs.writeFile('command.txt', 'free-cursor', (err) => {
+      if (err) res.status(400).send('Invalid command');
+      else res.send(`Free pos [${Math.round(pcX)}, ${Math.round(pcY)}]`);
+    });
+
+    fs.writeFile('ext_coords.txt', coords, (err) => {
+      if (err) res.status(400).send('Err: write file');
+    });
+  } catch (err) {
+    res.status(400).send('Free pos: err');
+  }
 });
 
 app.get('/get-bg', async (req, res) => {
@@ -131,33 +166,36 @@ const validCommands = new Set([
   'volume-down',
   'rewind-right',
   'rewind-left',
-  'center-cursor',
 ]);
 
-app.get('/check-server', (_, res) => {
+app.post('/check-server', (req, res) => {
   try {
+    const { width, height } = req.body;
+    widthPhone = width;
+    heightPhone = height;
+
     parseDATAfile();
+
+    writeCoordsByIsChecked();
+
+    if (fs.existsSync('bgimg.txt')) {
+      saveImg = fs.readFile('bgimg.txt', 'utf8', (err, saveImg) => {
+        if (err)
+          return res.status(400).send({
+            mess: 'Err load img!',
+          });
+        else {
+          return res.status(200).send({
+            mess: 'Server start successful!',
+            videoPlayers: DATA,
+            img: saveImg,
+          });
+        }
+      });
+    }
   } catch (err) {
     res.status(400).send({
       mess: err.message,
-    });
-  }
-
-  writeCoordsByIsChecked();
-
-  if (fs.existsSync('bgimg.txt')) {
-    saveImg = fs.readFile('bgimg.txt', 'utf8', (err, saveImg) => {
-      if (err)
-        return res.status(400).send({
-          mess: 'Err load img!',
-        });
-      else {
-        return res.status(200).send({
-          mess: 'Server start successful!',
-          videoPlayers: DATA,
-          img: saveImg,
-        });
-      }
     });
   }
 });
