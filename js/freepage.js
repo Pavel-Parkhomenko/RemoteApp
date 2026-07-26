@@ -6,12 +6,15 @@ const freeLog = document.querySelector('.free_log');
 let timer = null;
 
 freeCursor.addEventListener('click', () => {
-  boxFree.style.display = 'flex';
-  freeLog.textContent = `${window.screen.width}, ${window.screen.height}`;
+  boxFree.style.visibility = 'visible';
+  const freeBoxSize = boxFree.getBoundingClientRect();
+  document.getElementById('box_free').classList.add('active');
+  freeLog.textContent = `${Math.round(freeBoxSize.width)}, ${Math.round(freeBoxSize.height)}`;
 });
 
 function hideFreePage() {
-  boxFree.style.display = 'none';
+  document.getElementById('box_free').classList.remove('active');
+  boxFree.style.visibility = 'hidden';
 }
 
 function sendFreePosition(clientX, clientY) {
@@ -29,9 +32,21 @@ function sendFreePosition(clientX, clientY) {
       if (!res.ok) throw new Error();
       return res.text();
     })
+    .then((data) => {
+      createCircleTouch(clientX, clientY);
+      log.textContent = data;
+    })
     .catch((err) => (log.textContent = 'Attention! Server not available!'));
 
   freeLog.textContent = `${clientX}, ${clientY}`;
+}
+
+function createCircleTouch(x, y) {
+  const el = document.createElement('div');
+  el.classList.add('circle_touch');
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  boxFree.appendChild(el);
 }
 
 boxFree.addEventListener('touchstart', (e) => {

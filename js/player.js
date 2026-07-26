@@ -12,7 +12,7 @@ document.querySelector('.container').addEventListener('click', function (event) 
     fetch(`/${action}`)
       .then((res) => {
         if (!res.ok) throw new Error();
-        res.text();
+        return res.text();
       })
       .then((data) => {
         log.textContent = data;

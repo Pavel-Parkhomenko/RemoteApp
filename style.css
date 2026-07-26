@@ -198,12 +198,23 @@ h1 {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: #25062e;
+  background: linear-gradient(to right, #2b1c1b, #020252);
   z-index: 5;
-  display: none;
+  display: flex;
   overflow: hidden;
   align-items: center;
   justify-content: center;
+  visibility: hidden;
+
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+
+#box_free.active {
+  visibility: visible;
+  opacity: 1;
 }
 
 .free_log {
@@ -211,4 +222,12 @@ h1 {
   font-size: 24px;
   transform: rotate(90deg);
   text-align: center;
+}
+
+.circle_touch {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #f3ef08;
+  border-radius: 50%;
 }

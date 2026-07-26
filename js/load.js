@@ -1,14 +1,15 @@
 window.addEventListener('load', () => {
   if (!isBusy) {
     isBusy = true;
+    const freeBoxSize = boxFree.getBoundingClientRect();
     fetch('/check-server', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        width: window.screen.width,
-        height: window.screen.height,
+        width: Math.round(freeBoxSize.width),
+        height: Math.round(freeBoxSize.height),
       }),
     })
       .then((data) => data.json())

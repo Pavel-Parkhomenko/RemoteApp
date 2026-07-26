@@ -8,7 +8,7 @@ cd /d "%~dp0"
 :ASK
 cls
 echo =====================================
-echo          REMOTE CONTROL v2
+echo          REMOTE CONTROL v3
 echo =====================================
 echo.
 
@@ -56,7 +56,7 @@ if exist "keyScript.ahk" (
     start "" "keyScript.ahk"
     echo ✅ Успешно
 ) else (
-    echo ❌ ОШИБКА: keyScript.ahk не найден!
+    echo ❌ ОШИБКА: keyScript.ahk не найден или у вас не установлен autohotkey v2
     goto ERROR__
 )
 
