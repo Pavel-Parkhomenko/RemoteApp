@@ -16,14 +16,15 @@ app.use(express.json());
 let widthPhone = 500;
 let heightPhone = 500;
 
-const widthPc = 2560;
-const heightPc = 1440;
+let widthPc = 2560;
+let heightPc = 1440;
 
 const c_x = widthPc / 2;
 const c_y = heightPc / 2;
 
 // x-next,y-next,x-prev,y-prev,x-move,y-move
 let DATA = [];
+let resolutions = [];
 
 function parseDATAfile() {
   if (!fs.existsSync('./DATA.json')) {
@@ -178,8 +179,15 @@ app.post('/check-server', (req, res) => {
 
     writeCoordsByIsChecked();
 
+    fs.readFile('resolution.json', 'utf8', (err, res) => {
+      if (!err) {
+        resolutions = JSON.parse(res);
+        setResolutionPc();
+      }
+    });
+
     if (fs.existsSync('bgimg.txt')) {
-      saveImg = fs.readFile('bgimg.txt', 'utf8', (err, saveImg) => {
+      fs.readFile('bgimg.txt', 'utf8', (err, saveImg) => {
         if (err)
           return res.status(400).send({
             mess: 'Err load img!',
@@ -188,6 +196,7 @@ app.post('/check-server', (req, res) => {
           return res.status(200).send({
             mess: 'Server start successful!',
             videoPlayers: DATA,
+            resolutions: resolutions,
             img: saveImg,
           });
         }
@@ -206,6 +215,16 @@ function writeCoordsByIsChecked() {
       fs.writeFile('coords.txt', item.coords, (err) => {
         if (err) res.status(400).send({ mess: 'writeCoordsByIsChecked' });
       });
+      return;
+    }
+  });
+}
+
+function setResolutionPc() {
+  resolutions.map((item) => {
+    if (item.selected) {
+      widthPc = item.width;
+      heightPc = item.height;
       return;
     }
   });
@@ -248,6 +267,26 @@ app.post('/change-player', (req, res) => {
 
   fs.writeFile('coords.txt', coords, (err) => {
     if (err) res.status(400).send('Invalid command');
+  });
+});
+
+app.post('/change-resolution', (req, res) => {
+  const { resolution } = req.body;
+  let choiceRes;
+
+  resolutions.map((item) => {
+    if (item.name === resolution) {
+      item.selected = true;
+      choiceRes = item;
+      return;
+    } else item.selected = false;
+  });
+
+  setResolutionPc();
+
+  fs.writeFile('resolution.json', JSON.stringify(resolutions), (err) => {
+    if (!err) res.status(200).send(`Выбрано ${choiceRes.width}/${choiceRes.height}`);
+    else res.status(400).send('Err: resolution');
   });
 });
 
