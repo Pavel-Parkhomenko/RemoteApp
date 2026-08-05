@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Remote App</title>
+  <link rel="stylesheet" href="series.css">
+</head>
+
+<body>
+
+  <div class="container" id="test">
+    <p>aaaaa</p>
+    <button id="btn">
+      push
+    </button>
+  </div>
+
+
+  <script>
+    const btn = document.getElementById('btn');
+    console.log(btn);
+
+    btn.addEventListener('click', () => {
+      fetch('/get-series')
+        .then((res) => {
+          if (!res.ok) throw new Error();
+          return res.json();
+        })
+        .then((data) => {
+          document.getElementById('test').style.backgroundImage = `url('${data.img.src}')`;
+          console.log(data.img);
+        })
+        .catch((err) => console.log(err));
+    });
+  </script>
+
+</body>
+
+</html>

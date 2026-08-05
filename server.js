@@ -230,25 +230,6 @@ function setResolutionPc() {
   });
 }
 
-let prevCommand = ['', 1];
-app.get('/:command', (req, res) => {
-  const { command } = req.params;
-
-  if (!validCommands.has(command)) {
-    return res.status(400).send('Invalid command');
-  }
-
-  if (prevCommand[0] == command) prevCommand[1]++;
-  else {
-    prevCommand[0] = command;
-    prevCommand[1] = 1;
-  }
-
-  fs.writeFile('command.txt', command, (err) => {});
-
-  return res.send(`${command} x${prevCommand[1]}`);
-});
-
 app.post('/change-player', (req, res) => {
   const { player } = req.body;
   let coords = '';
@@ -303,5 +284,51 @@ function getLocalIP() {
   }
   return 'localhost';
 }
+
+//--------------------
+
+let resImgServer = {};
+app.post('/list-serries', (req, res) => {
+  try {
+    const { series, resImg } = req.body;
+    console.log(resImg);
+    resImgServer = resImg;
+    console.log('------');
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.get('/get-series', (req, res) => {
+  try {
+    if (resImgServer) {
+      res.status(200).send({
+        img: resImgServer,
+      });
+      console.log('send get-serries');
+    }
+  } catch (err) {
+    res.status(400).send({ error: 'resImgServer is empty' });
+  }
+});
+
+let prevCommand = ['', 1];
+app.get('/:command', (req, res) => {
+  const { command } = req.params;
+
+  if (!validCommands.has(command)) {
+    return res.status(400).send('Invalid command');
+  }
+
+  if (prevCommand[0] == command) prevCommand[1]++;
+  else {
+    prevCommand[0] = command;
+    prevCommand[1] = 1;
+  }
+
+  fs.writeFile('command.txt', command, (err) => {});
+
+  return res.send(`${command} x${prevCommand[1]}`);
+});
 
 app.listen(3000, () => console.log(`Server running on http://${getLocalIP()}:3000`));
