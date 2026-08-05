@@ -1,4 +1,4 @@
-document.getElementById('playerForm').addEventListener('change', function (e) {
+playerForm.addEventListener('change', function (e) {
   if (!isBusy) {
     isBusy = true;
     if (e.target.name === 'playerType') {
@@ -9,11 +9,12 @@ document.getElementById('playerForm').addEventListener('change', function (e) {
           player: e.target.value,
         }),
       })
-        .then((data) => {
+        .then((res) => {
           if (!res.ok) throw new Error();
-          log.textContent = data;
+          return res.text();
         })
-        .catch((err) => (log.textContent = 'Attention! Server not available!'))
+        .then((data) => (log.textContent = data))
+        .catch((err) => (log.textContent = 'Err: change v-player'))
         .finally(() => (isBusy = false));
     }
   }
@@ -28,7 +29,6 @@ document.getElementById('btnF').addEventListener('click', () => {
         return res.text();
       })
       .then((data) => {
-        console.log(data);
         log.textContent = data;
       })
       .catch((err) => (log.textContent = 'Attention! Server not available!'))

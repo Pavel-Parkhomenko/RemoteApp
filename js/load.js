@@ -17,7 +17,6 @@ window.addEventListener('load', () => {
       .then((data) => data.json())
       .then((data) => {
         log.textContent = data.mess;
-        const playerForm = document.getElementById('playerForm');
         data.videoPlayers.map((vp, _) => {
           playerForm.insertAdjacentHTML(
             'beforeEnd',
@@ -38,7 +37,6 @@ window.addEventListener('load', () => {
         if (data.img) containerBg.style.backgroundImage = `url('${data.img}')`;
       })
       .catch((err) => {
-        console.log(err);
         log.textContent = 'Attention! Server not available!';
       })
       .finally(() => (isBusy = false));

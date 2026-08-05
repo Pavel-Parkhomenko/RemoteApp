@@ -261,13 +261,15 @@ app.post('/change-player', (req, res) => {
     } else item.isChecked = false;
   });
 
-  if (coords === '') return res.status(400).send({ mess: 'Player is not found!' });
+  if (coords === '') return res.status(400).send('Player is not found!');
 
   fs.writeFile('DATA.json', JSON.stringify(DATA), (err) => {});
 
   fs.writeFile('coords.txt', coords, (err) => {
-    if (err) res.status(400).send('Invalid command');
+    if (err) return res.status(400).send('Invalid command');
   });
+
+  return res.status(200).send('Change to: ' + player);
 });
 
 app.post('/change-resolution', (req, res) => {
