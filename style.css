@@ -183,12 +183,19 @@ h1 {
 
 .form-menu {
   color: var(--text-color);
-  background-color: var(--bg-color);
   padding: 0 10px 0 10px;
   border-radius: 10px;
   margin-top: 10px;
   overflow-y: scroll;
   height: 200px;
+  width: 100%;
+}
+
+.box_list-btnSeries {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: var(--bg-color);
 }
 
 .btn-box {

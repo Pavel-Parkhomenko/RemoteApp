@@ -8,7 +8,7 @@ cd /d "%~dp0"
 :ASK
 cls
 echo =====================================
-echo          REMOTE CONTROL v3
+echo     REMOTE CONTROL v3 by YAnim
 echo =====================================
 echo.
 

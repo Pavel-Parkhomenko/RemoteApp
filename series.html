@@ -12,31 +12,14 @@
 
 <body>
 
-  <div class="container" id="test">
-    <p>aaaaa</p>
-    <button id="btn">
-      push
-    </button>
+  <div class="container" id="box_main">
+    <h1 class="text_header">Ваше аниме</h1>
+    <p id="log_series">&gt; </p>
+    <div class="box_list-series">
+    </div>
   </div>
 
-
-  <script>
-    const btn = document.getElementById('btn');
-    console.log(btn);
-
-    btn.addEventListener('click', () => {
-      fetch('/get-series')
-        .then((res) => {
-          if (!res.ok) throw new Error();
-          return res.json();
-        })
-        .then((data) => {
-          document.getElementById('test').style.backgroundImage = `url('${data.img.src}')`;
-          console.log(data.img);
-        })
-        .catch((err) => console.log(err));
-    });
-  </script>
+  <script src="/js/series.js"></script>
 
 </body>
 

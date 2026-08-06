@@ -288,29 +288,54 @@ function getLocalIP() {
 //--------------------
 
 let resImgServer = {};
+let seriesServer = [];
+let prevIndSeries2 = -1;
 app.post('/list-serries', (req, res) => {
   try {
     const { series, resImg } = req.body;
-    console.log(resImg);
     resImgServer = resImg;
-    console.log('------');
+    seriesServer = series;
+    prevIndSeries2 = -1;
   } catch (err) {
     console.log(err);
+    res.status(500).send('Err: list-serries');
   }
 });
 
-app.get('/get-series', (req, res) => {
+app.get('/get-series-and-poster', (req, res) => {
   try {
-    if (resImgServer) {
-      res.status(200).send({
-        img: resImgServer,
-      });
-      console.log('send get-serries');
-    }
+    res.status(200).send({
+      img: resImgServer,
+      series: seriesServer,
+    });
   } catch (err) {
-    res.status(400).send({ error: 'resImgServer is empty' });
+    res.status(500).send({ mess: 'Err: get-series-and-poster' });
   }
 });
+
+app.post('/change-series', (req, res) => {
+  try {
+    let { x, y, ind } = req.body;
+    y = Number(y) + 120 + 20; // + панель хрома + чуть дальше на элемент
+    x = Number(x) + 20; // + чуть дальше на элемент
+
+    if (prevIndSeries2 === -1) prevIndSeries2 = ind;
+    else {
+      seriesServer[prevIndSeries2].status = 1; // watched
+      prevIndSeries2 = ind;
+    }
+    seriesServer[ind].status = 2; // сейчас смотрю
+
+    fs.writeFileSync('command.txt', 'move-change-series');
+    fs.writeFileSync('ext_coords.txt', `${x},${y}`);
+    res.status(200).send(`Change series [${x}, ${y}]`);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Err: change-series');
+  }
+});
+
+//-----------------DANGEROUS-----------------
 
 let prevCommand = ['', 1];
 app.get('/:command', (req, res) => {
