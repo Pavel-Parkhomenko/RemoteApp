@@ -37,6 +37,25 @@
     .span_text {
       color: #7a0a80;
     }
+
+    .box-input_selector {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      background-color: #330d3b;
+      padding: 5px;
+      margin-bottom: 5px;
+    }
+
+    .box-input_selector input {
+      margin: 0;
+    }
+
+    .text_selector {
+      margin: 0;
+      padding: 0;
+      color: white
+    }
   </style>
 </head>
 
@@ -44,6 +63,11 @@
   <p><a href="https://github.com/Pavel-Parkhomenko/RemoteApp"><span class="span_text">YAnim</span></a> - поиск серий на
     <span class="span_text">yummyani.me</span>
   </p>
+  <div class="box-input_selector">
+    <span class="text_selector">div.</span><input placeholder="poster" type="text" id="input-poster_sel" />
+    <span class="text_selector">div.</span><input placeholder="common" type="text" id="input-common_sel" />
+    <input placeholder="series" type="text" id="input-series_sel" />
+  </div>
   <button id="parseBtn">Поиск</button>
   <div id="result"></div>
   <script src="popup.js"></script>

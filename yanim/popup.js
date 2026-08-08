@@ -1,10 +1,38 @@
+const posterSel = document.getElementById('input-poster_sel');
+const seriesSel = document.getElementById('input-series_sel');
+const commonSel = document.getElementById('input-common_sel');
+
+document.addEventListener('DOMContentLoaded', function () {
+  const selectors = JSON.parse(localStorage.getItem('selectors'));
+  if (selectors) {
+    posterSel.value = selectors.poster;
+    seriesSel.value = selectors.series;
+    commonSel.value = selectors.common;
+  }
+});
+
 document.getElementById('parseBtn').onclick = async () => {
   const result = document.getElementById('result');
+  let poster = '';
+  let seriesText = '';
+  let commonSeries = '';
+
+  if (!posterSel.value || !seriesSel.value || !commonSel.value) {
+    result.textContent = 'Enter selectors';
+    return;
+  } else {
+    poster = posterSel.value || '';
+    seriesText = seriesSel.value || '';
+    commonSeries = commonSel.value || '';
+
+    localStorage.setItem(
+      'selectors',
+      JSON.stringify({ poster, series: seriesText, common: commonSeries })
+    );
+  }
 
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-    console.log(tab.url);
     if (
       !tab.url.startsWith('https://ru.yummyani.me/catalog/item/') &&
       !tab.url.startsWith('https://en.yummyani.me/catalog/item/')
@@ -15,10 +43,14 @@ document.getElementById('parseBtn').onclick = async () => {
 
     const response = await chrome.scripting.executeScript({
       target: { tabId: tab.id },
-      func: () => {
-        const img = document.querySelector('div.n3').querySelector('img');
-        if (!img) return null;
+      func: (poster, commonSeries, seriesText) => {
+        let series = [];
         let resImg = {};
+
+        const posterDiv = document.querySelector(`div.${CSS.escape(poster)}`);
+        if (!posterDiv) return { series, resImg: null };
+        const img = posterDiv.querySelector('img');
+        if (!img) return { series, resImg: null };
 
         resImg = {
           src: img.src,
@@ -27,34 +59,40 @@ document.getElementById('parseBtn').onclick = async () => {
           alt: img.alt,
         };
 
-        const parents = document.querySelectorAll('div.xI');
-        if (parents.length === 0) return null;
-        const series = [];
+        const parentCommon = document.querySelector(`div.${CSS.escape(commonSeries)}`);
+        if (!parentCommon) return { series: null, resImg };
+        const children = parentCommon.querySelectorAll(`div.${CSS.escape(seriesText)}`);
+        if (children.length === 0) return { series: null, resImg };
 
-        parents.forEach((parent) => {
-          const children = parent.querySelectorAll('div._-8');
-          children.forEach((child) => {
-            const rect = child.getBoundingClientRect();
-            series.push({
-              x: rect.x,
-              y: rect.y,
-              status: 0, // 0 не смотрел, 1 просмотрено, 2 смотрю
-              // top: rect.top,
-              // left: rect.left,
-              // width: rect.width,
-              // height: rect.height,
-            });
+        children.forEach((child) => {
+          const rect = child.getBoundingClientRect();
+          series.push({
+            x: rect.x,
+            y: rect.y,
+            status: 0, // 0 не смотрел, 1 просмотрено, 2 смотрю
+            // top: rect.top,
+            // left: rect.left,
+            // width: rect.width,
+            // height: rect.height,
           });
         });
 
         return { series, resImg };
       },
+
+      args: [poster, commonSeries, seriesText],
     });
 
     const data = response[0].result;
 
-    if (!data) {
-      result.textContent = 'Ничего не найдено';
+    if (data.series === null) {
+      result.textContent = 'Err: series';
+      return;
+    } else if (data.resImg === null) {
+      result.textContent = 'Err: poster';
+      return;
+    } else if (!data) {
+      result.textContent = 'Error!';
       return;
     }
 
@@ -75,5 +113,4 @@ async function sendToServer(data) {
   });
 
   const result = await res.json();
-  // console.log(result);
 }
