@@ -5,7 +5,8 @@
 }
 
 body {
-  background: linear-gradient(to right, #2b1c1b, #020252);
+  /* background: linear-gradient(to right, #2b1c1b, #020252); */
+  background-color: black;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,12 +21,12 @@ button {
 }
 
 .container {
-  background-size: cover;
+  /* background-size: cover; */
   background-repeat: no-repeat;
   background-position: center;
-  will-change: transform;
+  /* will-change: transform; */
 
-  height: 100vh;
+  /* height: 100vh; */
   padding: 20px;
   box-sizing: border-box;
 }
